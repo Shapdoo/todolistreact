@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { flushSync } from "react-dom";
+
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
-const Formulario = ({ issues, setIssues }) => {
+const Formulario = ({ issues, setIssues, issue }) => {
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
   const [prio, setPrio] = useState("");
@@ -10,9 +10,23 @@ const Formulario = ({ issues, setIssues }) => {
   const [employee, setEmployee] = useState("");
   const [self, setSelf] = useState(false);
   const [error, setError] = useState(false);
-  
 
-  //CUANDO EL USUARIO SELECCIONE EL ASIGNARME A MI MISMO SE SETEA EL VALOR DEL EMPLOYEE
+  useEffect(() => {
+    if(Object.keys(issue).length > 0){
+      setName(issue.name)
+      setDate(issue.date)
+      setPrio(issue.prio)
+      setEmployee(issue.employee)
+      setDetail(issue.detail)
+      setSelf(issue.self)
+    }
+  }, [issue])
+
+
+  /**
+   * CUANDO EL USUARIO SELECCIONE EL ASIGNARME A MI MISMO 
+   * SE SETEA EL VALOR DEL EMPLOYEE
+   */
   const handleSelf = () => {
     setSelf(!self);
 
@@ -22,10 +36,20 @@ const Formulario = ({ issues, setIssues }) => {
       setEmployee("Yo");
     }
   };
+  
+  /**
+   * @returns {string} retorna el id de cada atarea
+   */
+  const generarId = () => {
+    const random = Math.random().toString(36).substring(2)
+    const date = Date.now().toString(36)
+
+    return random + date
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
     if ([name, employee, priority, date, detail].includes("")) {
       console.log("al menos un campo vacío");
       setError(true);
@@ -38,8 +62,48 @@ const Formulario = ({ issues, setIssues }) => {
       prio,
       employee,
       detail,
+      self,
     };
+    
+    //Editando registro
+    if(issue.id){
+      console.log('entra')
+      /**
+       * se le coloca el id del objeto issue a editar al nuevo objeto
+       * que vamos a actualizar
+      */
+      tarea['id'] = issue.id
+      /**
+       * ALGORITMO PARA ACTUALIZAR UN OBJETO:
+       * iteramos nuestro arreglo actual de issues
+       * y buscamos la coincidencia con el id
+       * si lo encuentra retorna el objeto que contiene la data actual
+       * si no lo encuentra retorna el que esta en el arreglo ya que no
+       * se va a editar
+       * @returns {issue} issue a actualizar
+       */
+      const issuesUpdated = issues.map(tareaState => {
+        if(tareaState.id === issue.id){
+          return tarea
+        }
+        return tareaState
+      })
 
+      setIssues(issuesUpdated)
+
+      setName("");
+      setDate("");
+      setPrio("none");
+      setDetail("");
+      setEmployee("");
+      setError(false);
+      setSelf(false);
+      return
+    }
+
+
+
+    tarea['id'] = generarId()
     setIssues([...issues, tarea]);
 
     //Reiniciando el formulario
@@ -79,7 +143,6 @@ const Formulario = ({ issues, setIssues }) => {
             type="text"
             placeholder="nombre de la tarea..."
             id="name"
-            checked={self === false && false }
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -90,7 +153,7 @@ const Formulario = ({ issues, setIssues }) => {
             htmlFor="employee"
             className="font-bold text-gray-700 block uppercase"
           >
-            👥 Asignar
+            👥 Responsable
           </label>
           <input
             name="employee"
@@ -111,8 +174,8 @@ const Formulario = ({ issues, setIssues }) => {
               className="checked:bg-green-600"
               type="checkbox"
               id="self"
+              checked={self}
               onChange={handleSelf}
-              //   onChange={ () => setSelf(!self) }
             />
           </div>
         </div>
@@ -169,15 +232,15 @@ const Formulario = ({ issues, setIssues }) => {
             id="detail"
             value={detail}
             onChange={(e) => setDetail(e.target.value)}
-            className="w-full border-2 p-2 mt-2 placeholder-gray-400"
+            className="w-full border-2 p-2 mt-2 placeholder-gray-400 rounded-md"
             placeholder="Aqui va la descripcion de la tarea..."
           ></textarea>
         </div>
 
         <input
           type="submit"
-          className="bg-blue-700 w-full p-3 uppercase font-bold text-white hover:bg-green-500 cursor-pointer transition-all"
-          value="✅ Listar tarea"
+          className="bg-blue-700 w-full p-3 uppercase font-bold text-white hover:bg-green-500 cursor-pointer transition-all rounded-xl"
+          value={!issue.id ? '✅ Listar tarea' : '✅ Editar tarea'}
         />
       </form>
     </div>

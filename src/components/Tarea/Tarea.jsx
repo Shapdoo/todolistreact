@@ -1,7 +1,20 @@
-const Tarea = ({ issue }) => {
+import Button from "../Button/Button";
+
+const Tarea = ({ issue, setIssue, deleteIssue }) => {
+
+  //Funcion de editar
+  const edit = () => {
+    setIssue(issue);
+  };
+
+  //Funcion de eliminar
+  const remove = () => {
+    deleteIssue(issue.id);
+  };
+
   return (
     <div className="m-3 bg-white shadow-md rounded-xl py-10 px-5">
-      <p className="font-bold mb-3 text-gray-700 uppercase">    
+      <p className="font-bold mb-3 text-gray-700 uppercase">
         Tarea: {""}
         <span className="font-normal normal-case">{issue.name}</span>
       </p>
@@ -19,24 +32,39 @@ const Tarea = ({ issue }) => {
       <p className="font-bold mb-3 text-gray-700 uppercase">
         Prioridad: {""}
         <span className="font-normal normal-case">
-          {
-            issue.prio === 'low' && '🟢 Low' || 
-            issue.prio === 'medium' && '🟡 Medium' || 
-            issue.prio === 'high' && '🔴 High'
-          }
+          {(issue.prio === "low" && "🟢 Low") ||
+            (issue.prio === "medium" && "🟡 Medium") ||
+            (issue.prio === "high" && "🔴 High")}
         </span>
       </p>
 
       <p className="font-bold mb-3 text-gray-700 uppercase">
         {" "}
         Detalle: {""}
-        <span className="font-normal normal-case">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor
-          suscipit aut neque eius, molestiae exercitationem quaerat, dolore modi
-          aliquid harum dicta corrupti sed deleniti vero ex itaque ducimus alias
-          hic?
-        </span>
+        <span className="font-normal normal-case">{issue.detail}</span>
       </p>
+
+      <div className="mt-5 flex gap-3 flex-col md:flex-row justify-between">
+        <Button
+          bg="bg-yellow-500"
+          hover="hover:bg-yellow-600"
+          width="w-3/4"
+          color="text-white"
+          handleClick={edit}
+        >
+          Editar
+        </Button>
+
+        <Button
+          bg="bg-red-500"
+          hover="hover:bg-red-700"
+          width="w-3/4"
+          color="text-white"
+          habdleClick={remove}
+        >
+          Eliminar
+        </Button>
+      </div>
     </div>
   );
 };

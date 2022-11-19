@@ -5,9 +5,12 @@ import Formulario from "./components/Formulario/Formulario";
 import ListaDeTareas from "./components/ListaDeTareas/ListaDeTareas";
 
 const App = () => {
+  const deleteIssue = (id) => {
+    console.log('Issue eliminado', id)
+  }
 
   const [issues, setIssues] = useState([])
-
+  const [issue, setIssue] = useState({})
   return (
     <div className="container mx-auto mt-20">
       <Header />
@@ -16,9 +19,12 @@ const App = () => {
         <Formulario 
           setIssues={setIssues} 
           issues={issues}
+          issue={issue}
         />
         <ListaDeTareas 
           issues={issues}
+          setIssue={setIssue}
+          deleteIssue={deleteIssue}
         />
       </div>
 

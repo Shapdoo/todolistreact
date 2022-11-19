@@ -1,24 +1,56 @@
-import Tarea from "../Tarea/Tarea";
+import { useEffect } from "react";
 
-const ListaDeTareas = ({issues}) => {
-  console.log(issues)  
+import Tarea from "../Tarea/Tarea";
+import Label from "../Label/Label";
+
+const ListaDeTareas = ({ issues, setIssue, deleteIssue }) => {
+
+  // useEffect(() => {
+  //   if(issues.length <= 0){
+  //     return
+  //   }
+  //   console.log('nuevo issue')
+  // }, [issues])
+
+  /**
+   * Retorna un componente Label con un mensaje diferente
+   * @returns {JSX} JSX element 
+   */
+  const textBehavior = () => {
+    if (issues.length <= 0) {
+      return (
+        <Label>
+          <>
+            Lista tus {""}
+            <span className="font-bold text-yellow-600">Tareas 🖖</span>
+          </>
+        </Label>
+      );
+    }
+
+    return (
+      <Label>
+        <>
+          Administra tus {""}
+          <span className="font-bold text-yellow-600">Tareas 🖖</span>
+        </>
+      </Label>
+    );
+  };
+  
+
   return (
     <div className="md:w-1/2 lg:w-3/5">
       <h2 className="font-bold text-3xl text-center">Listado de tareas</h2>
-      <p className="text-lg mt-5 text-center mb-5">
-        Administra tus {''}
-        <span className="font-bold text-yellow-600">Tareas 🖖</span>
-      </p>
-
+      { textBehavior() }
       <div className="md:h-screen md:overflow-y-scroll">
-        { issues.map((issue, index) => {
-            return(
-                <Tarea 
-                    key={index}
-                    issue={issue}
-                />
-            )
-        }) }
+        {issues.map((issue) => {
+          return <Tarea key={issue.id} 
+                        issue={issue} 
+                        setIssue={setIssue} 
+                        deleteIssue={deleteIssue}
+                        />;
+        })}
       </div>
     </div>
   );
