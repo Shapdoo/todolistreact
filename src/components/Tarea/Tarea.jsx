@@ -3,12 +3,12 @@ import Button from "../Button/Button";
 const Tarea = ({ issue, setIssue, deleteIssue }) => {
 
   //Funcion de editar
-  const edit = () => {
+  const handleEdit = () => {
     setIssue(issue);
   };
 
   //Funcion de eliminar
-  const remove = () => {
+  const handleDelete = () => {
     deleteIssue(issue.id);
   };
 
@@ -50,7 +50,7 @@ const Tarea = ({ issue, setIssue, deleteIssue }) => {
           hover="hover:bg-yellow-600"
           width="w-3/4"
           color="text-white"
-          handleClick={edit}
+          handleClick={handleEdit}
         >
           Editar
         </Button>
@@ -60,7 +60,7 @@ const Tarea = ({ issue, setIssue, deleteIssue }) => {
           hover="hover:bg-red-700"
           width="w-3/4"
           color="text-white"
-          habdleClick={remove}
+          handleClick={handleDelete}
         >
           Eliminar
         </Button>
