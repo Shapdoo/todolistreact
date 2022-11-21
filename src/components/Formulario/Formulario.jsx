@@ -22,7 +22,6 @@ const Formulario = ({ issues, setIssues, issue }) => {
     }
   }, [issue])
 
-
   /**
    * CUANDO EL USUARIO SELECCIONE EL ASIGNARME A MI MISMO 
    * SE SETEA EL VALOR DEL EMPLOYEE
