@@ -4,7 +4,6 @@ import Tarea from "../Tarea/Tarea";
 import Label from "../Label/Label";
 
 const ListaDeTareas = ({ issues, setIssue, deleteIssue }) => {
-
   // useEffect(() => {
   //   if(issues.length <= 0){
   //     return
@@ -14,7 +13,7 @@ const ListaDeTareas = ({ issues, setIssue, deleteIssue }) => {
 
   /**
    * Retorna un componente Label con un mensaje diferente
-   * @returns {JSX} JSX element 
+   * @returns {JSX} JSX element
    */
   const textBehavior = () => {
     if (issues.length <= 0) {
@@ -37,19 +36,21 @@ const ListaDeTareas = ({ issues, setIssue, deleteIssue }) => {
       </Label>
     );
   };
-  
 
   return (
     <div className="md:w-1/2 lg:w-3/5">
       <h2 className="font-bold text-3xl text-center">Listado de tareas</h2>
-      { textBehavior() }
+      {textBehavior()}
       <div className="md:h-screen md:overflow-y-scroll">
         {issues.map((issue) => {
-          return <Tarea key={issue.id} 
-                        issue={issue} 
-                        setIssue={setIssue} 
-                        deleteIssue={deleteIssue}
-                        />;
+          return (
+            <Tarea
+              key={issue.id}
+              issue={issue}
+              setIssue={setIssue}
+              deleteIssue={deleteIssue}
+            />
+          );
         })}
       </div>
     </div>
